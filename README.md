@@ -14,7 +14,7 @@ E.g.:
 
 	- BloodType.AB_minus
 	- BloodType.B_plus
-	- BloodType.O_minus.
+	- BloodType.O_minus
 	- etc.
 	
 The program will then return either 1 or 0 for compatibility. 
