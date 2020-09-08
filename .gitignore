@@ -1,3 +1,7 @@
-.DC_*
+.idea
+.DS_Store
+.DS_*
 *.DC_*
 ./venv/*
+venv/*
+/venv/*
