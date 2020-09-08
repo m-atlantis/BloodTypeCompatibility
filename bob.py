@@ -1,4 +1,3 @@
-import alice
 import dealer
 
 
@@ -12,10 +11,10 @@ def __compute_v():
     return y + s % 2 ** n
 
 
-def receive():
+def receive(var):
     """ Get u from Alice. """
     global u
-    u = alice.send()
+    u = var
 
 
 def send():

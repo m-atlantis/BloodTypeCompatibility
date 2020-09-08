@@ -1,4 +1,3 @@
-import bob
 import dealer
 
 
@@ -18,9 +17,10 @@ def send():
     return u
 
 
-def receive():
+def receive(var1, var2):
     global v, z_b
-    v, z_b = bob.send()
+    v = var1
+    z_b = var2
 
 
 def output_z():

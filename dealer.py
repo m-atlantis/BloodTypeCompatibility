@@ -54,5 +54,3 @@ def to_bob():
     """ Returns (s, n, M_B). """
     return s, n_size, matrix_b
 
-
-__init(3)
