@@ -11,9 +11,10 @@ The user will then be prompt to type in the two blood types which are on the for
 	BloodType.TYPE
 	
 E.g.:
-	BloodType.AB_minus
-	BloodType.B_plus
-	BloodType.O_minus
+
+	- BloodType.AB_minus
+	- BloodType.B_plus
+	- BloodType.O_minus.
+	- etc.
 	
-	.. etc.
 The program will then return either 1 or 0 for compatibility. 
