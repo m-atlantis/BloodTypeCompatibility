@@ -1,24 +1,18 @@
-## Instruction to `blood_type_compatibility.py`
-The first function looks up the chosen two blood types in a dictionary using the recipients type as the key, and the donors blood type is the value. By seeing if such a value exists for a given key is equal to making a lookup in a truth table.
+## Instructions
+Type `python test.py` to run the program.
 
-The second function uses 3-bit representations of the blood types to do bitwise-OR comparisons. 
+You will be prompted to type in the blood type for the recipient and donor. 
+The allowed values for these are either their respective name or the bit encoding of the blood type, e.g.:
+    
+    AB+
+    AB-
+    B+ 
+    O+
+    O-
+    111
+    101
+    001
+    010
+    ... etc.
 
-By bitwise-OR'ing the two blood types and comparing the result to the recipients blood type we can see if they are compatible. If the recipients bit-representation doesn't change the blood types fit.
-
-The run the script:
-
-	Python main.py ARG
-
-Where ARG is either 1 or 2; running the first or second function respectively.
-
-The user will then be prompt to type in the two blood types which are on the form:
-	BloodType.TYPE
-	
-E.g.:
-
-	- BloodType.AB_minus
-	- BloodType.B_plus
-	- BloodType.O_minus
-	- etc.
-	
-The program will then return either 1 or 0 for compatibility. 
+Once both have been input, the program will return the result as a single bit, 1 for compatible, 0 for non-compatible. 
