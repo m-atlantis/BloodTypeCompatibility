@@ -1,14 +1,14 @@
 def init(y_in, s_in, n_in, matrix_b_in):
     global y, s, n, matrix_b, v
-    y = format(y_in, 'b')
-    s = format(s_in, 'b')
+    y = y_in
+    s = s_in
     n = n_in
     matrix_b = matrix_b_in
     v = __compute_v()
 
 
 def __compute_v():
-    return (int(str(y), 2) + int(str(s), 2)) % (2 ** n)
+    return (y + s) % (2 ** n)
 
 
 def receive(u_in):

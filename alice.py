@@ -1,14 +1,14 @@
 def init(x_in, r_in, n_in, matrix_a_in, ):
     global x, r, n, matrix_a, u
-    x = format(x_in, 'b')
-    r = format(r_in, 'b')
+    x = x_in
+    r = r_in
     n = n_in
     matrix_a = matrix_a_in
     u = __compute_u()
 
 
 def __compute_u():
-    return (int(str(x), 2) + int(str(r), 2)) % (2 ** n)
+    return (x + r) % (2 ** n)
 
 
 def send():
