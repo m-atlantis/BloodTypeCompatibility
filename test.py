@@ -6,15 +6,22 @@ import bob
 
 
 def __run(argv):
-    if len(argv) < 2:
-        print("Need to give length of n as argument.")
+    if len(argv) < 4:
+        print("Need to give length of n, x and y as arguments.")
         exit()
     else:
+        #x = format(argv[2], 'b')
+        #y = format(argv[3], 'b')
+        x = 0b00000001
+        y = 0b00000010
+
         dealer.__init(int(argv[1]))
-        alice.__init_variables()
-        bob.__init_variables()
+        dealer.init_alice(x)
+        dealer.init_bob(y)
         bob.receive(alice.send())
-        alice.receive(bob.send()[0], bob.send()[1])
+        v, z_b = bob.send()
+        alice.receive(v, z_b)
+
         print(alice.output_z())
 
 

@@ -1,24 +1,25 @@
-import dealer
-
-
-def __init_variables():
-    global y, s, n, matrix_b
-    y = dealer.create_random_bit_string(n)
-    s, n, matrix_b = dealer.to_bob()
+def init(y_in, s_in, n_in, matrix_b_in):
+    global y, s, n, matrix_b, v
+    y = format(y_in, 'b')
+    s = format(s_in, 'b')
+    n = n_in
+    matrix_b = matrix_b_in
+    v = __compute_v()
 
 
 def __compute_v():
-    return y + s % 2 ** n
+    return (int(str(y), 2) + int(str(s), 2)) % (2 ** n)
 
 
-def receive(var):
+def receive(u_in):
     """ Get u from Alice. """
     global u
-    u = var
+    u = u_in
 
 
 def send():
     """ Send (v, z_b) to Alice. """
-    v = __compute_v()
+    print(u)
+    print(v)
     z_b = matrix_b[u, v]
     return v, z_b

@@ -1,15 +1,16 @@
-import dealer
-
-
-def __init_variables():
+def init(x_in, r_in, n_in, matrix_a_in, ):
     global x, r, n, matrix_a, u
-    x = dealer.create_random_bit_string(n)
-    r, n, matrix_a = dealer.to_alice()
+    x = format(x_in, 'b')
+    r = format(r_in, 'b')
+    n = n_in
+    matrix_a = matrix_a_in
     u = __compute_u()
 
 
 def __compute_u():
-    return x + r % 2 ** n
+    print("x: " + str(x))
+    print("r: " + str(r))
+    return (int(str(x), 2) + int(str(r), 2)) % (2 ** n)
 
 
 def send():
@@ -17,10 +18,10 @@ def send():
     return u
 
 
-def receive(var1, var2):
+def receive(v_in, z_b_in):
     global v, z_b
-    v = var1
-    z_b = var2
+    v = v_in
+    z_b = z_b_in
 
 
 def output_z():
