@@ -19,7 +19,5 @@ def receive(u_in):
 
 def send():
     """ Send (v, z_b) to Alice. """
-    print(u)
-    print(v)
     z_b = matrix_b[u, v]
     return v, z_b

@@ -8,8 +8,6 @@ def init(x_in, r_in, n_in, matrix_a_in, ):
 
 
 def __compute_u():
-    print("x: " + str(x))
-    print("r: " + str(r))
     return (int(str(x), 2) + int(str(r), 2)) % (2 ** n)
 
 
@@ -26,5 +24,4 @@ def receive(v_in, z_b_in):
 
 def output_z():
     """ Return z, which is the resulting bit. """
-    # TODO: Make sure z is in {0,1}
     return matrix_a[u, v] ^ z_b
