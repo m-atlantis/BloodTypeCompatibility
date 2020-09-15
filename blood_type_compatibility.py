@@ -26,6 +26,17 @@ def __get_blood_type_bits(i):
     return switcher.get(i, "Invalid blood type.")
 
 
+def get_bit(byte_val, idx):
+    return (byte_val & (1 << idx)) != 0
+
+
+def __blood_type_boolean(x, y):
+    # f((xA, xB, xR),(yA, yB, yR)) = (1 ⊕ (xA · (1 ⊕ yA))) · (1 ⊕ (xB · (1 ⊕ yB))) · (1 ⊕ (xR · (1 ⊕ yR)))
+    return (1 ^ (get_bit(x, 2) & (1 ^ get_bit(y, 2)))
+            & (1 ^ (get_bit(x, 1) & (1 ^ get_bit(y, 1))))
+            & (1 ^ (get_bit(x, 0) & (1 ^ get_bit(y, 0)))))
+
+
 def __blood_type_compatibility(x, y):
     dealer.__init()
     dealer.init_alice(x)
