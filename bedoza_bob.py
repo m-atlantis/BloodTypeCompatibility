@@ -93,7 +93,7 @@ def layer_3():
 def layer_4_0():
     u_in, v_in, w_in = dealer.get_u_v_w_layer4_b()
     set_u_v_w(u_in, v_in, w_in)
-    d, e = calc_d_e_shares(z_share[2], z_share[1], u, v)
+    d, e = calc_d_e_shares(z_share[1], z_share[2], u, v)
     set_e_d_shares(d, e)
 
 
@@ -101,7 +101,7 @@ def layer_4_1():
     d_b_shares, e_b_shares = alice.get_e_d_shares()
     e = e_shares ^ e_b_shares
     d = d_shares ^ d_b_shares
-    z = (w ^ e) & (z_share[2] ^ d) & (z_share[1] ^ e) & d
+    z = (w ^ e) & (z_share[1] ^ d) & (z_share[2] ^ e) & d
 
     set_z_share_layer_4(z)
 
@@ -115,7 +115,7 @@ def layer_5_0():
     u_in, v_in, w_in = dealer.get_u_v_w_layer5_b()
     set_u_v_w(u_in, v_in, w_in)
 
-    d, e = calc_d_e_shares(z_share_4, z_share[0], u, v)
+    d, e = calc_d_e_shares(z_share[0], z_share_4, u, v)
     set_e_d_shares(d, e)
 
 
@@ -123,7 +123,7 @@ def layer_5_1():
     d_b_shares, e_b_shares = alice.get_e_d_shares()
     e = e_shares ^ e_b_shares
     d = d_shares ^ d_b_shares
-    z = (w ^ e) & (z_share_4 ^ d) & (z_share[0] ^ e) & d
+    z = (w ^ e) & (z_share[0] ^ d) & (z_share_4 ^ e) & d
 
     set_final_z(z)
 

@@ -48,24 +48,27 @@ def test(x, y):
 
 
 class TestProtocolCorrectness(unittest.TestCase):
-    # The following tests for compatibility with self
-    #    def test_all(self):
-    #        for i in range(8):
-    #            for j in range(8):
-    #                self.assertEqual(test(i, j), blood_type_boolean(i, j))
+    def test_all(self):
+        for i in range(8):
+            for j in range(8):
+                self.assertEqual(test(j, i), blood_type_boolean(j, i))
 
     def test_101_011(self):
         x = 5
         y = 3
         self.assertEqual(test(x, y), blood_type_boolean(x, y))
 
-    def test_111_000(self):
-        x = 4
+    def test_000_011(self):
+        x = 0
+        y = 3
+        # print(blood_type_boolean(x, y))
+        self.assertEqual(test(x, y), blood_type_boolean(x, y))
+
+    def test_010_100(self):
         y = 2
+        x = 4
         self.assertEqual(test(x, y), blood_type_boolean(x, y))
 
 
-# suite = unittest.TestLoader().loadTestsFromTestCase(TestProtocolCorrectness)
-# unittest.TextTestRunner(verbosity=2).run(suite)
-
-print(test(4, 2))
+suite = unittest.TestLoader().loadTestsFromTestCase(TestProtocolCorrectness)
+unittest.TextTestRunner(verbosity=2).run(suite)

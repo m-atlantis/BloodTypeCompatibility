@@ -13,7 +13,7 @@ def __init_triple():
 
 def triple_check():
     __init_triple()
-    while not (w_a ^ w_b) == (u_a ^ u_b) & (v_a ^ v_b):
+    while not ((w_a ^ w_b) == (u_a ^ u_b) & (v_a ^ v_b)):
         __init_triple()
 
 
