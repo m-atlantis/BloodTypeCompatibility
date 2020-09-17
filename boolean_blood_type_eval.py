@@ -15,14 +15,13 @@ def blood_type_boolean(x, y):
 
 def xor_with_const_1(x):
     # XOR with 1 is a NOT gate
-    return ~x
+    return ~ x
 
 
-def and_x_with_y(x, y, u, v, w):
-    d = x ^ u
-    e = y ^ v
-    z = w ^ e & x ^ d & y ^ e & d
-    return z
+def and_x_with_y(x, y, u, v):
+    d_share = x ^ u
+    e_share = y ^ v
+    return d_share, e_share
 
 
 def layer_1(y_in):
@@ -34,13 +33,23 @@ def layer_1(y_in):
     return tmp
 
 
-def layer_2(x_in, y_in, u, v, w):
-    tmp = [0, 0, 0]
+def get_e_d_shares(x_in, y_in, u, v):
+    d_shares = [0, 0, 0]
+    e_shares = [0, 0, 0]
 
     for i in range(3):
-        tmp[i] = and_x_with_y(x_in[i], y_in[i], u[i], v[i], w[i])
+        d_shares[i], e_shares[i] = and_x_with_y(x_in[i], y_in[i], u, v)
 
-    return tmp
+    return d_shares, e_shares
+
+
+def layer_2_1(x_share, y_share, w_share, d, e):
+    z = [0, 0, 0]
+
+    for i in range(3):
+        z[i] = w_share[i] ^ e[i] & x_share[i] ^ d[i] & y_share[i] ^ e[i] & d[i]
+
+    return z
 
 
 def layer_3(var_in):
@@ -52,9 +61,10 @@ def layer_3(var_in):
     return tmp
 
 
-def layer_4(var_in, u, v, w):
-    return and_x_with_y(and_x_with_y(var_in[0], var_in[1], u[3], v[3], w[3]), var_in[2], u[4], v[4], w[4])
+def layer_4(x_share, y_share, w_share, d, e):
+    z = [0, 0, 0]
 
+    for i in range(3):
+        z[i] = w_share[i] ^ e[i] & x_share[i] ^ d[i] & y_share[i] ^ e[i] & d[i]
 
-def secure_bool_eval_blood_type_compatibility(x, y, u, v, w):
-    return layer_4(layer_3(layer_2(x, layer_1(y), u, v, w)), u, v, w)
+    return z

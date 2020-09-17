@@ -2,9 +2,9 @@ import bedoza_dealer as dealer
 
 
 def __init(y_in, y_a_in):
-    global y, u, v, w, y_b, y_a, x_b
+    global y, u, v, w, y_b, y_a
     y = y_in
-    y_b, y_a, x_b = [0, 0, 0], [0, 0, 0], [0, 0, 0]
+    y_b, y_a = [0, 0, 0], [0, 0, 0]
     y_a = y_a_in
     u = [0, 0, 0, 0, 0]
     v = [0, 0, 0, 0, 0]
@@ -31,21 +31,41 @@ def __get_v(i):
     return v[i]
 
 
-def __get_w(i):
-    return w[i]
+def __get_w():
+    return w
+
+
+# TESTING this
+def set_y_b(y_b_in):
+    y_b = y_b_in
+
+
+def get_y_b():
+    return y_b
+
+
+def set_z(z_in):
+    global z
+    z = z_in
+
+
+def get_z():
+    return z
+
+
+# def get_y_a():
+#    return int(' '.join([str(elem) for elem in y_a]), 2)
+
+
+def set_x_b(x_b_in):
+    global x_b
+    x_b = [0, 0, 0]
+    x_b = x_b_in
+
+
+def get_x_b():
+    return x_b
 
 
 def get_y_a():
-    return int(' '.join([str(elem) for elem in y_b]), 2)
-
-
-def set_x_b(x_b_in, i):
-    x_b[i] = x_b_in
-
-
-def get_x_b(i):
-    return x_b[i]
-
-
-def send_y_a_to_alice(i):
-    return y_a[i]
+    return y_a
