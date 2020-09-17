@@ -2,7 +2,7 @@ import unittest
 import bedoza_dealer as dealer
 import bedoza_alice as alice
 import bedoza_bob as bob
-from boolean_blood_type_eval import blood_type_boolean
+from bedoza_func import blood_type_boolean
 
 
 def init_parties(x, y):
