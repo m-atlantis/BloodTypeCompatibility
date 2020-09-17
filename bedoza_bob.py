@@ -7,7 +7,8 @@ import bedoza_dealer as dealer
 def __init(y_in):
     global y, u, v, w, y_a, y_b
     y = get_bits((y_in))
-    y_a = [random.getrandbits(1), random.getrandbits(1), random.getrandbits(1)]
+    # y_a = [random.getrandbits(1), random.getrandbits(1), random.getrandbits(1)]
+    y_a = [0, 0, 1]
     y_b = __create_y_b()
 
 
@@ -34,7 +35,7 @@ def send_y_share_to_alice():
 def layer_1():
     new_x = []
     for i in range(3):
-        new_x.insert(0, xor_with_1(get_x_share()[i]))
+        new_x.append(xor_with_1(get_x_share()[i]))
     set_x_share(new_x)
 
 
@@ -77,7 +78,7 @@ def layer_2_1():
     for i in range(3):
         e = e_shares[i] ^ e_b_shares[i]
         d = d_shares[i] ^ d_b_shares[i]
-        z[i] = w[i] ^ e & y_b[i] ^ d & x_share[i] ^ e & d
+        z[i] = (w[i] ^ e) & (y_b[i] ^ d) & (x_share[i] ^ e) & d
 
     set_z_share(z)
 
@@ -85,7 +86,7 @@ def layer_2_1():
 def layer_3():
     new_z = []
     for i in range(3):
-        new_z.insert(0, xor_with_1(z_share[i]))
+        new_z.append(xor_with_1(z_share[i]))
     set_z_share(new_z)
 
 
@@ -100,7 +101,7 @@ def layer_4_1():
     d_b_shares, e_b_shares = alice.get_e_d_shares()
     e = e_shares ^ e_b_shares
     d = d_shares ^ d_b_shares
-    z = w ^ e & z_share[2] ^ d & z_share[1] ^ e & d
+    z = (w ^ e) & (z_share[2] ^ d) & (z_share[1] ^ e) & d
 
     set_z_share_layer_4(z)
 
@@ -113,6 +114,7 @@ def set_z_share_layer_4(z):
 def layer_5_0():
     u_in, v_in, w_in = dealer.get_u_v_w_layer5_b()
     set_u_v_w(u_in, v_in, w_in)
+
     d, e = calc_d_e_shares(z_share_4, z_share[0], u, v)
     set_e_d_shares(d, e)
 
@@ -121,7 +123,7 @@ def layer_5_1():
     d_b_shares, e_b_shares = alice.get_e_d_shares()
     e = e_shares ^ e_b_shares
     d = d_shares ^ d_b_shares
-    z = w ^ e & z_share_4 ^ d & z_share[0] ^ e & d
+    z = (w ^ e) & (z_share_4 ^ d) & (z_share[0] ^ e) & d
 
     set_final_z(z)
 
