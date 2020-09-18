@@ -38,6 +38,15 @@ def init():
     u_b_3, v_b_3, w_b_3 = get_triple_b()
 
 
+def init_fake():
+    global u_a_1, u_b_1, v_a_1, v_b_1, w_a_1, w_b_1
+    global u_a_2, u_b_2, v_a_2, v_b_2, w_a_2, w_b_2
+    global u_a_3, u_b_3, v_a_3, v_b_3, w_a_3, w_b_3
+    u_a_1, u_b_1, v_a_1, v_b_1, w_a_1, w_b_1 = [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]
+    u_a_2, u_b_2, v_a_2, v_b_2, w_a_2, w_b_2 = 0, 0, 0, 0, 0, 0
+    u_a_3, u_b_3, v_a_3, v_b_3, w_a_3, w_b_3 = 0, 0, 0, 0, 0, 0
+
+
 def get_triple_a():
     return u_a, v_a, w_a
 

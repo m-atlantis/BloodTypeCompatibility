@@ -7,13 +7,13 @@ import bedoza_dealer as dealer
 def __init(x_in):
     global x, u, v, w, x_a, x_b
     x = get_bits(x_in)
-    # x_b = [random.getrandbits(1), random.getrandbits(1), random.getrandbits(1)]
-    x_b = [1, 1, 1]
+    x_b = [random.getrandbits(1), random.getrandbits(1), random.getrandbits(1)]
     x_a = __create_x_a()
 
 
 def __create_x_a():
     tmp = []
+
     for i in range(len(x_b)):
         tmp.append(x[i] ^ x_b[i])
     return tmp
@@ -34,6 +34,7 @@ def send_x_share_to_bob():
 
 def layer_1():
     new_y = []
+
     for i in range(3):
         new_y.append(xor_with_1(get_y_share()[i]))
     set_y_share(new_y)
@@ -54,7 +55,6 @@ def set_u_v_w(u_in, v_in, w_in):
 
 def layer_2_0():
     u_in, v_in, w_in = dealer.get_u_v_w_layer1_a()
-
     set_u_v_w(u_in, v_in, w_in)
 
     set_e_d_shares([0, 0, 0], [0, 0, 0])
@@ -79,7 +79,7 @@ def layer_2_1():
     for i in range(3):
         e = e_shares[i] ^ e_b_shares[i]
         d = d_shares[i] ^ d_b_shares[i]
-        z[i] = (w[i] ^ e) & (x_a[i] ^ d) & (y_share[i] ^ e) & d
+        z[i] = w[i] ^ e & x_a[i] ^ d & y_share[i] ^ e & d
 
     set_z_share(z)
 
@@ -88,13 +88,16 @@ def layer_3():
     new_z = []
     for i in range(3):
         new_z.append(xor_with_1(z_share[i]))
+
     set_z_share(new_z)
 
 
 def layer_4_0():
     u_in, v_in, w_in = dealer.get_u_v_w_layer4_a()
     set_u_v_w(u_in, v_in, w_in)
+
     d, e = calc_d_e_shares(z_share[1], z_share[2], u, v)
+
     set_e_d_shares(d, e)
 
 
@@ -103,7 +106,7 @@ def layer_4_1():
     e = e_shares ^ e_b_shares
     d = d_shares ^ d_b_shares
 
-    z = (w ^ e) & (z_share[1] ^ d) & (z_share[2] ^ e) & d
+    z = w ^ e & z_share[1] ^ d & z_share[2] ^ e & d
 
     set_z_share_layer_4(z)
 
@@ -118,6 +121,7 @@ def layer_5_0():
     set_u_v_w(u_in, v_in, w_in)
 
     d, e = calc_d_e_shares(z_share[0], z_share_4, u, v)
+
     set_e_d_shares(d, e)
 
 
@@ -125,14 +129,15 @@ def layer_5_1():
     d_b_shares, e_b_shares = bob.get_e_d_shares()
     e = e_shares ^ e_b_shares
     d = d_shares ^ d_b_shares
-    z = (w ^ e) & (z_share[0] ^ d) & (z_share_4 ^ e) & d
+
+    z = w ^ e & z_share[0] ^ d & z_share_4 ^ e & d
 
     set_final_z(z)
 
 
-def set_final_z(z):
+def set_final_z(z_in):
     global z_final
-    z_final = z
+    z_final = z_in
 
 
 def output_z():
