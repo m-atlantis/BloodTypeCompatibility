@@ -4,8 +4,9 @@ import bedoza_bob as bob
 import bedoza_dealer as dealer
 
 
-def __init(x_in):
-    global x, u, v, w, x_a, x_b
+def __init(x_in, u_v_w_in):
+    global x, u, v, w, x_a, x_b, u_v_w
+    u_v_w = u_v_w_in
     x = get_bits(x_in)
     x_b = [random.getrandbits(1), random.getrandbits(1), random.getrandbits(1)]
     x_a = __create_x_a()
@@ -46,21 +47,22 @@ def set_e_d_shares(d, e):
     d_shares = d
 
 
-def set_u_v_w(u_in, v_in, w_in):
+def set_u_v_w(i):
     global u, v, w
-    u = u_in
-    v = v_in
-    w = w_in
+    u = u_v_w[i][0]
+    v = u_v_w[i][1]
+    w = u_v_w[i][2]
 
 
 def layer_2_0():
-    u_in, v_in, w_in = dealer.get_u_v_w_layer1_a()
-    set_u_v_w(u_in, v_in, w_in)
-
+    global w_2
+    w_2 = []
     set_e_d_shares([0, 0, 0], [0, 0, 0])
 
     for i in range(3):
-        d_shares[i], e_shares[i] = calc_d_e_shares(x_a[i], y_share[i], u[i], v[i])
+        set_u_v_w(i)
+        w_2.append(w)
+        d_shares[i], e_shares[i] = calc_d_e_shares(x_a[i], y_share[i], u, v)
 
 
 def get_e_d_shares():
@@ -79,7 +81,7 @@ def layer_2_1():
     for i in range(3):
         e = e_shares[i] ^ e_b_shares[i]
         d = d_shares[i] ^ d_b_shares[i]
-        z[i] = w[i] ^ e & x_a[i] ^ d & y_share[i] ^ e & d
+        z[i] = w_2[i] ^ e & x_a[i] ^ d & y_share[i] ^ e & d
 
     set_z_share(z)
 
@@ -93,8 +95,7 @@ def layer_3():
 
 
 def layer_4_0():
-    u_in, v_in, w_in = dealer.get_u_v_w_layer4_a()
-    set_u_v_w(u_in, v_in, w_in)
+    set_u_v_w(3)
 
     d, e = calc_d_e_shares(z_share[1], z_share[2], u, v)
 
@@ -117,8 +118,7 @@ def set_z_share_layer_4(z):
 
 
 def layer_5_0():
-    u_in, v_in, w_in = dealer.get_u_v_w_layer5_a()
-    set_u_v_w(u_in, v_in, w_in)
+    set_u_v_w(4)
 
     d, e = calc_d_e_shares(z_share[0], z_share_4, u, v)
 
