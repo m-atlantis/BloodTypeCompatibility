@@ -7,7 +7,6 @@ def get_bits(byte_in):
 
 def xor_with_1(val_in):
     return val_in ^ 1
-    # return ~val_in
 
 
 def calc_d_e_shares(x, y, u, v):

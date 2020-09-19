@@ -1,7 +1,6 @@
 import random
-from bedoza_func import get_bits, xor_with_1, calc_d_e_shares
+from bedoza_func import get_bits, calc_d_e_shares
 import bedoza_alice as alice
-import bedoza_dealer as dealer
 
 
 def __init(y_in, u_v_w_in):
@@ -84,10 +83,6 @@ def layer_2_1():
 
 def layer_3():
     pass
-    # new_z = []
-    # for i in range(3):
-    #     new_z.append(xor_with_1(z_share[i]))
-    # set_z_share(new_z)
 
 
 def layer_4_0():

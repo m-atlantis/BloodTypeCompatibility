@@ -1,7 +1,6 @@
 import random
 from bedoza_func import get_bits, xor_with_1, calc_d_e_shares
 import bedoza_bob as bob
-import bedoza_dealer as dealer
 
 
 def __init(x_in, u_v_w_in):
