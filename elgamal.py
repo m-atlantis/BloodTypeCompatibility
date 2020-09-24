@@ -1,30 +1,26 @@
 import random
-import numpy
 
 
 def create_g_p_q():
     global g, p, q
     p = None
     q = None
-    random_bits = random.randint(pow(10, 20), pow(10, 50))
 
-    # while p == None or not is_prime(p):
-    #     q = random.randint(pow(10, 20), pow(10, 50))
-    #     p = q.multiply(new
-    #     BigInteger("2")).add(BigInteger.ONE)
-
-    q = random.randint(pow(10, 20), pow(10, 50))
+    primes = [i for i in range(1, 1000) if is_prime(i)]
+    q = random.choice(primes)
     g = random.randint(2, q)
 
-    # TODO: Check that p is prime
     p = 2 * q + 1
+    while not is_prime(p):
+        q = random.choice(primes)
+        p = 2 * q + 1
 
 
 def create_sk():
     global sk
-    sk = random.randint(pow(10, 20), q)
+    sk = random.randint(1, q)
     while gcd(sk, q) != 1:
-        sk = random.randint(pow(10, 20), q)
+        sk = random.randint(1, q)
 
 
 def create_pk():
@@ -33,9 +29,9 @@ def create_pk():
 
 
 def create_r():
-    r = random.randint(pow(10, 20), q)
+    r = random.randint(1, q)
     while gcd(r, q) != 1:
-        r = random.randint(pow(10, 20), q)
+        r = random.randint(1, q)
     return r
 
 
@@ -64,17 +60,7 @@ def gcd(a, b):
 
 
 def mod_exp(base, exp, modulus):
-    # return pow(base, exp, modulus)
-    x = 1
-    y = base
-
-    while exp > 0:
-        if exp % 2 == 0:
-            x = (x * y) % modulus
-        y = (y * y) % modulus
-        exp = int(exp / 2)
-
-    return x % modulus
+    return pow(base, exp, modulus)
 
 
 def is_prime(n):
@@ -97,8 +83,3 @@ def decrypt(c1, c2):
     s = mod_exp(c1, sk, p)
 
     return int(c2 / s)
-
-
-gen()
-c1, c2 = encrypt(3)
-print(decrypt(c1, c2))
