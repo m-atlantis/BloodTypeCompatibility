@@ -8,12 +8,12 @@ def create_g_p_q():
 
     primes = [i for i in range(3, 1000) if is_prime(i)]
     q = random.choice(primes)
-    g = random.randint(2, q)
 
     p = 2 * q + 1
     while not is_prime(p):
         q = random.choice(primes)
         p = 2 * q + 1
+    g = random.randrange(1, p)
 
 
 def create_sk():
@@ -43,8 +43,6 @@ def gen():
 
 def o_gen():
     global o_h
-    # TODO: s should be random between 1 - p using random string r
-    # TODO: pick number r between 1 - 2^(2n) and output (r mod p) = s
 
     r = random.randint(2, (2 ** 2 * (p.bit_length()))) % p
     o_h = r ** 2 % p
