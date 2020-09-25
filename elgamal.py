@@ -22,15 +22,22 @@ def create_sk():
 
 
 def create_pk():
+    set_h(pow(g, sk, p))
+    # print(h)
+
+
+def set_h(h_in):
     global h
-    h = pow(g, sk, p)
-    print(h)
+    h = h_in
 
 
-def gen():
+def init():
     create_g_p_q()
     create_sk()
     create_pk()
+
+
+def gen():
     return h
 
 
@@ -38,12 +45,10 @@ def o_gen():
     global o_h
     # TODO: s should be random between 1 - p using random string r
     # TODO: pick number r between 1 - 2^(2n) and output (r mod p) = s
-    # r = (# bits in p + 1) mod p
 
     r = random.randint(2, (2 ** 2 * (p.bit_length()))) % p
-    print(r ** 2)
-    # s = 1
-    # o_h = mod_exp(s, 2, p)
+    o_h = r ** 2 % p
+    return o_h
 
 
 def is_prime(n):
@@ -53,22 +58,17 @@ def is_prime(n):
     return True
 
 
-def encrypt(m):
+def encrypt(m, pk):
     r = random.randint(2, q)
 
     c1 = pow(g, r, p)
-    c2 = m * pow(h, r, p)
+    c2 = m * pow(pk, r, p)
 
     return c1, c2
 
 
 def decrypt(c1, c2):
     s = pow(c1, sk, p)
+    inv = pow(s, p - 2, p)
 
-    return int(c2 / s)
-
-
-gen()
-o_gen()
-c1, c2 = encrypt(111)
-print(decrypt(c1, c2))
+    return c2 * inv % p
