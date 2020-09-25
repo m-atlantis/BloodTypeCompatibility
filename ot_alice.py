@@ -20,4 +20,8 @@ def get_public_keys():
 
 def decrypt(ciphertexts):
     c1, c2 = ciphertexts[blood_type_index]
-    return elgamal.decrypt(c1, c2)
+
+    dec = elgamal.decrypt(c1, c2)
+    if dec == 2:
+        return False
+    return dec
