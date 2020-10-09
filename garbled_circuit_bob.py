@@ -1,4 +1,5 @@
-import garbled_circuit_func as func
+import garbled_circuit_extra_func as func
+import garbled_circuit_func as gb_func
 import random
 
 
@@ -7,9 +8,17 @@ def init(y_in):
     one_power_128_string = func.create_128_bit_string(1)
     circuit = None
 
-    F, e_x, e_y, d = func.garble_circuit(one_power_128_string, circuit)
+    F, e_x, e_y, d = None
 
-    Y = func.enc_y(None, None)
+    Y = gb_func.enc_y(None, None)
+
+
+def enc_x(e_x, x):
+    # TODO: 2-1-OT protocol
+    e_x_0 = [0]
+    e_x_1 = [1]
+    X = [e_x_0, e_x_1]
+    return X
 
 
 def send_to_alice():

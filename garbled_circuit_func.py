@@ -1,64 +1,81 @@
 import random
 import numpy as np
-import hashlib
+from garbled_circuit_extra_func import *
 
 
-def get_bits(byte_in):
-    tmp = []
-    for i in range(3):
-        tmp.insert(0, int((byte_in & (1 << i)) != 0))
-    return tmp
-
-
-def create_128_bit_string(bit=None):
-    """ Creates a string of random bits that is of length n. """
-    final_bit_str = ""
-
-    for i in range(16):
-        if bit is None:
-            temp = str(random.randint(0, 1))
-        else:
-            temp = str(bit)
-        final_bit_str += temp
-
-    # return int(final_bit_str, 2)
-    return final_bit_str
-
-
-def garble_circuit(bit_string, circuit):
+def garble_circuit():
     F = []
     e_x = []
     e_y = []
     d = []
 
+    labels = [[""] * 2] * 23
+    for i in range(23):
+        labels[i] = create_labels_e()
+
     F, e_x, e_y, d = None, None, None, None
-    return F, e_x, e_y, d
+    return F, [e_x, e_y], d
 
 
-def create_circuit_labels():
-    left = [create_128_bit_string(), create_128_bit_string()]
-    right = [create_128_bit_string(), create_128_bit_string()]
-    c = [create_128_bit_string(), create_128_bit_string()]
+def xor_gate(labels_a, labels_b, labels_c):
+    # row_1 = np.array(["b \ a", labels_a[0], labels_a[1]])
+    # row_2 = np.array([labels_b[0], labels_c[1], labels_c[0]])
+    # row_3 = np.array([labels_b[1], labels_c[1], labels_c[0]])
 
-    return left, right, c
+    c = []
+    one_power_128_string = create_128_bit_string(0)
+
+    c.append(string_xor(hash(labels_a[0], labels_b[1]), (labels_c[1] + one_power_128_string)))
+    c.append(string_xor(hash(labels_a[1], labels_b[1]), (labels_c[0] + one_power_128_string)))
+    c.append(string_xor(hash(labels_a[0], labels_b[0]), (labels_c[1] + one_power_128_string)))
+    c.append(string_xor(hash(labels_a[1], labels_b[0]), (labels_c[0] + one_power_128_string)))
+
+    # Shuffle the list
+    random.shuffle(c)
+
+    return c
 
 
-def nand_gate(left, right, c):
-    row_1 = np.array([left, right, c[1]])
-    row_2 = np.array([left, right, c[1]])
-    row_3 = np.array([left, right, c[1]])
-    row_4 = np.array([left, right, c[0]])
+def and_gate(labels_a, labels_b, labels_c):
+    # row_1 = np.array(["b \ a", labels_a[0], labels_a[1]])
+    # row_2 = np.array([labels_b[0], labels_c[1], labels_c[0]])
+    # row_3 = np.array([labels_b[1], labels_c[1], labels_c[0]])
 
-    return np.array([row_1, row_2, row_3, row_4])
+    c = []
+    one_power_128_string = create_128_bit_string(0)
+
+    c.append(string_xor(hash(labels_a[0], labels_b[0]), (labels_c[0] + one_power_128_string)))
+    c.append(string_xor(hash(labels_a[0], labels_b[1]), (labels_c[0] + one_power_128_string)))
+    c.append(string_xor(hash(labels_a[1], labels_b[0]), (labels_c[0] + one_power_128_string)))
+    c.append(string_xor(hash(labels_a[1], labels_b[1]), (labels_c[1] + one_power_128_string)))
+
+    # Shuffle the list
+    random.shuffle(c)
+
+    return c
 
 
-def hash(left_key, right_key, input):
-    h = hashlib.shake_256()
-    h.update(left_key)
-    h.update(right_key)
-    h.update(input)
+def circuit(x, y, g):
+    labels = [[""] * 2] * 23
+    for i in range(23):
+        labels[i] = create_labels_e()
 
-    return h.hexdigest(32)
+    eval_of_current_gate = evaluate_gate(g[i], x[i], y[i])
+    if i == len(g):
+        return eval_of_current_gate
+
+    # TODO:
+    # if g is XOR
+    # return circuit(eval_of_current_gate, evaluate_gate(g[i + 1], eval_of_current_gate, y[i + 1]), i, g)
+
+    return circuit(eval_of_current_gate, evaluate_gate(g[i + 1], eval_of_current_gate, y[i + 1]), i, g)
+
+
+def create_labels_e():
+    wire_0 = create_128_bit_string()
+    wire_1 = create_128_bit_string()
+
+    return [wire_0, wire_1]
 
 
 def enc_y(e_y, y_in):
@@ -66,9 +83,13 @@ def enc_y(e_y, y_in):
     return Y
 
 
-def enc_x(e_x, x):
-    # TODO: 2-1-OT protocol
-    e_x_0 = [0]
-    e_x_1 = [1]
-    X = [e_x_0, e_x_1]
-    return X
+def evaluate_gate(garbled_gate, l_a, r_b):
+    one_power_128_string = create_128_bit_string(0)
+
+    for i in range(4):
+        k = string_xor(garbled_gate[i], hash(l_a, r_b))
+
+        if k[16:] == one_power_128_string:
+            return k[:16]
+
+    raise Exception("No correct decryption found for the given keys.")
