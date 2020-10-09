@@ -8,9 +8,7 @@ def init(y_in):
     one_power_128_string = func.create_128_bit_string(1)
     circuit = None
 
-    F, e_x, e_y, d = None
-
-    Y = gb_func.enc_y(None, None)
+    F, e_x, e_y, e_xor, d = gb_func.init_garbled_circuit(y_in)
 
 
 def enc_x(e_x, x):
