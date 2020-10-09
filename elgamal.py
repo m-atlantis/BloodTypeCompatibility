@@ -70,3 +70,9 @@ def decrypt(c1, c2):
     inv = pow(s, p - 2, p)
 
     return c2 * inv % p
+
+
+def reset():
+    set_h(None)
+    g, p, q, sk, o_h = None, None, None, None, None
+    init()

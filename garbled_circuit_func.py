@@ -11,6 +11,7 @@ def xor_gate(labels_a, labels_b, labels_c):
     c = []
     one_power_128_string = create_128_bit_string(0)
 
+
     c.append(string_xor(hash(labels_a[0], labels_b[1]), (labels_c[1] + one_power_128_string)))
     c.append(string_xor(hash(labels_a[1], labels_b[1]), (labels_c[0] + one_power_128_string)))
     c.append(string_xor(hash(labels_a[0], labels_b[0]), (labels_c[1] + one_power_128_string)))
@@ -41,7 +42,7 @@ def and_gate(labels_a, labels_b, labels_c):
     return c
 
 
-def init_garbled_circuit(y, x_in):
+def init_garbled_circuit(y):
     labels = [[""] * 2] * 23
     for i in range(23):
         labels[i] = create_labels_e()
@@ -67,8 +68,6 @@ def init_garbled_circuit(y, x_in):
     d = labels[22]
 
     e_x = [labels[3], labels[10], labels[18]]
-    # TODO: e_x needs to be 2-1-OT
-    # e_x_OT = enc_x[e_x, x_in]
     e_y = enc_y([labels[0], labels[7], labels[15]], y)
     e_xor = [labels[1], labels[8], labels[16], labels[5], labels[12], labels[20]]
 
@@ -90,10 +89,6 @@ def enc_y(e_y_labels, y_in):
         Y.append(e_y_labels[i][y_in_bits[i]])
 
     return Y
-
-
-def enc_x(e_x_in, x_in):
-    pass
 
 
 def evaluate_gate(garbled_gate, l_a, r_b):
