@@ -15,7 +15,7 @@ def init(y_in):
         encrypted_e_x[i][0] = (elgamal.encrypt(e_x[i][0], public_keys[i][0]))
         encrypted_e_x[i][1] = (elgamal.encrypt(e_x[i][1], public_keys[i][1]))
 
-    # TODO: This is used because OT doesn't decrypt correctly.
+    # TODO: This is used to override encrypted_e_x[] because OT doesn't decrypt correctly.
     encrypted_e_x = e_x
 
 

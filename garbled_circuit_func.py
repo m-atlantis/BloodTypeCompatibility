@@ -4,6 +4,7 @@ from garbled_circuit_extra_func import *
 
 
 def xor_gate(labels_a, labels_b, labels_c):
+    """" Creates garbled circuit of an XOR gate. """
     # row_1 = np.array(["b \ a", labels_a[0], labels_a[1]])
     # row_2 = np.array([labels_b[0], labels_c[1], labels_c[0]])
     # row_3 = np.array([labels_b[1], labels_c[1], labels_c[0]])
@@ -23,6 +24,7 @@ def xor_gate(labels_a, labels_b, labels_c):
 
 
 def and_gate(labels_a, labels_b, labels_c):
+    """" Creates garbled circuit of an AND gate. """
     # row_1 = np.array(["b \ a", labels_a[0], labels_a[1]])
     # row_2 = np.array([labels_b[0], labels_c[1], labels_c[0]])
     # row_3 = np.array([labels_b[1], labels_c[1], labels_c[0]])
@@ -42,6 +44,7 @@ def and_gate(labels_a, labels_b, labels_c):
 
 
 def init_garbled_circuit(y):
+    """ Creates the garbled circuit used for Blood Type Compatibility. """
     labels = [[""] * 2] * 23
     for i in range(23):
         labels[i] = create_labels_e()
@@ -74,6 +77,7 @@ def init_garbled_circuit(y):
 
 
 def create_labels_e():
+    """ Creates labels used to represent bits in the Garbled Circuit. """
     wire_0 = create_128_bit_string()
     wire_1 = create_128_bit_string()
 
@@ -81,6 +85,7 @@ def create_labels_e():
 
 
 def enc_y(e_y_labels, y_in):
+    """ Creates [Y] by encoding y bit values to e_y labels. """
     y_in_bits = get_bits(y_in)
     Y = []
 
@@ -91,6 +96,8 @@ def enc_y(e_y_labels, y_in):
 
 
 def evaluate_gate(garbled_gate, l_a, r_b, i):
+    """ Evaluates a given gate on left key and right key. The value 'i' is given for debugging purposes. """
+
     one_power_128_string = create_128_bit_string(0)
 
     for i in range(4):
@@ -103,6 +110,7 @@ def evaluate_gate(garbled_gate, l_a, r_b, i):
 
 
 def evaluate_circuit(F, e_x, e_y, e_xor):
+    """ Evaluate the full Blood Type Compatibility circuit. """
     ya_xor = evaluate_gate(F[0], e_y[0], e_xor[0][1], 0)
     ya_and_xa = evaluate_gate(F[1], ya_xor, e_x[0], 1)
     gate_3_xor = evaluate_gate(F[2], ya_and_xa, e_xor[1][1], 2)

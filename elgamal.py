@@ -6,7 +6,7 @@ def create_g_p_q():
     p = None
     q = None
 
-    primes = [i for i in range(300, 1000) if is_prime(i)]
+    primes = [i for i in range(300, 1400) if is_prime(i)]
     q = random.choice(primes)
 
     p = 2 * q + 1

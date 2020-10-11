@@ -11,11 +11,8 @@ def init(x_in):
     blood_type_index = x
 
     for i in range(3):
-        for j in range(2):
-            if j == x[i]:
-                public_keys[i][j] = elgamal.gen()
-            else:
-                public_keys[i][j] = elgamal.o_gen()
+        public_keys[i][x[i]] = elgamal.gen()
+        public_keys[i][1 - x[i]] = elgamal.o_gen()
 
 
 def get_public_keys():
@@ -40,6 +37,7 @@ def test():
 def decrypt(ciphertexts):
     e_x = []
 
+    # TODO: This would be used to decrypt if OT worked.
     # for i in range(3):
     #     c1, c2 = ciphertexts[i][x[i]]
     #     dec = elgamal.decrypt(c1, c2)
