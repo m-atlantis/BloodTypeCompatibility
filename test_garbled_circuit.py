@@ -5,12 +5,11 @@ import elgamal
 
 
 def test(x, y):
-    elgamal.init()
+    # elgamal.init()
     alice.init(x)
-    bob.set_public_keys(alice.get_public_keys())
+    bob.set_public_keys(*alice.get_public_keys())
     bob.init(y)
-    F, Y, d = bob.send_to_alice()
-    alice.set_values_from_bob(F, Y, d, bob.get_encrypted_messages())
+    alice.set_values_from_bob(*bob.send_to_alice(), bob.get_encrypted_messages())
     return alice.test()
 
 

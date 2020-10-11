@@ -32,8 +32,8 @@ def create_128_bit_string(bit=None):
 def hash(left_key, right_key, input=None):
     """ Hashing using SHA-256 of digest length 32 bit, using first 'left_key' and then 'right_key'. """
     h = hashlib.shake_256()
-    h.update(left_key.encode('utf-8'))
-    h.update(right_key.encode('utf-8'))
+    h.update(str(left_key).encode('utf-8'))
+    h.update(str(right_key).encode('utf-8'))
 
     if input is not None:
         h.update(input.encode('utf-8'))

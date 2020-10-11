@@ -31,6 +31,10 @@ def set_h(h_in):
     h = h_in
 
 
+def get_values():
+    return sk, p, g
+
+
 def init():
     create_g_p_q()
     create_sk()
@@ -65,7 +69,22 @@ def encrypt(m, pk):
     return c1, c2
 
 
+def encrypt_for_garbled_circuits(m, pk, prime, generator):
+    new_q = (prime - 1) / 2
+    r = random.randint(2, new_q)
+    c1 = pow(generator, r, prime)
+    c2 = m * pow(pk, r, prime)
+
+    return c1, c2
+
+
 def decrypt(c1, c2):
     s = pow(c1, sk, p)
     inv = pow(s, p - 2, p)
     return c2 * inv % p
+
+
+def decrypt_for_garbled_circuit(c1, c2, secret_key, prime_p):
+    s = pow(c1, secret_key, prime_p)
+    inv = pow(s, prime_p - 2, prime_p)
+    return int(c2) * inv % prime_p
