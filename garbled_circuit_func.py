@@ -11,7 +11,6 @@ def xor_gate(labels_a, labels_b, labels_c):
     c = []
     one_power_128_string = create_128_bit_string(0)
 
-
     c.append(string_xor(hash(labels_a[0], labels_b[1]), (labels_c[1] + one_power_128_string)))
     c.append(string_xor(hash(labels_a[1], labels_b[1]), (labels_c[0] + one_power_128_string)))
     c.append(string_xor(hash(labels_a[0], labels_b[0]), (labels_c[1] + one_power_128_string)))
@@ -49,27 +48,27 @@ def init_garbled_circuit(y):
 
     F = []
 
-    F.append([xor_gate(labels[0], labels[1], labels[2])])
-    F.append([and_gate(labels[2], labels[3], labels[4])])
-    F.append([xor_gate(labels[4], labels[5], labels[6])])
+    F.append(xor_gate(labels[0], labels[1], labels[2]))
+    F.append(and_gate(labels[2], labels[3], labels[4]))
+    F.append(xor_gate(labels[4], labels[5], labels[6]))
 
-    F.append([xor_gate(labels[7], labels[8], labels[9])])
-    F.append([and_gate(labels[9], labels[10], labels[11])])
-    F.append([xor_gate(labels[11], labels[12], labels[13])])
+    F.append(xor_gate(labels[7], labels[8], labels[9]))
+    F.append(and_gate(labels[9], labels[10], labels[11]))
+    F.append(xor_gate(labels[11], labels[12], labels[13]))
 
-    F.append([and_gate(labels[6], labels[13], labels[14])])
+    F.append(and_gate(labels[6], labels[13], labels[14]))
 
-    F.append([xor_gate(labels[15], labels[16], labels[17])])
-    F.append([and_gate(labels[17], labels[18], labels[19])])
-    F.append([xor_gate(labels[19], labels[20], labels[21])])
+    F.append(xor_gate(labels[15], labels[16], labels[17]))
+    F.append(and_gate(labels[17], labels[18], labels[19]))
+    F.append(xor_gate(labels[19], labels[20], labels[21]))
 
-    F.append([and_gate(labels[14], labels[21], labels[22])])
+    F.append(and_gate(labels[14], labels[21], labels[22]))
 
     d = labels[22]
 
     e_x = [labels[3], labels[10], labels[18]]
     e_y = enc_y([labels[0], labels[7], labels[15]], y)
-    e_xor = [labels[1], labels[8], labels[16], labels[5], labels[12], labels[20]]
+    e_xor = [labels[1], labels[5], labels[8], labels[12], labels[16], labels[20]]
 
     return F, e_x, e_y, e_xor, d
 
@@ -91,7 +90,7 @@ def enc_y(e_y_labels, y_in):
     return Y
 
 
-def evaluate_gate(garbled_gate, l_a, r_b):
+def evaluate_gate(garbled_gate, l_a, r_b, i):
     one_power_128_string = create_128_bit_string(0)
 
     for i in range(4):
@@ -100,4 +99,22 @@ def evaluate_gate(garbled_gate, l_a, r_b):
         if k[16:] == one_power_128_string:
             return k[:16]
 
-    raise Exception("No correct decryption found for the given keys.")
+    raise Exception("No correct decryption found for the given keys at gate: ", i)
+
+
+def evaluate_circuit(F, e_x, e_y, e_xor):
+    ya_xor = evaluate_gate(F[0], e_y[0], e_xor[0][1], 0)
+    ya_and_xa = evaluate_gate(F[1], ya_xor, e_x[0], 1)
+    gate_3_xor = evaluate_gate(F[2], ya_and_xa, e_xor[1][1], 2)
+
+    yb_xor = evaluate_gate(F[3], e_y[1], e_xor[2][1], 3)
+    yb_and_xb = evaluate_gate(F[4], yb_xor, e_x[1], 4)
+    gate_6_xor = evaluate_gate(F[5], yb_and_xb, e_xor[3][1], 5)
+
+    gate_3_and_gate_6 = evaluate_gate(F[6], gate_3_xor, gate_6_xor, 6)
+
+    yr_xor = evaluate_gate(F[7], e_y[2], e_xor[4][1], 7)
+    yr_and_xr = evaluate_gate(F[8], yr_xor, e_x[2], 8)
+    gate_10_xor = evaluate_gate(F[9], yr_and_xr, e_xor[5][1], 9)
+
+    return evaluate_gate(F[10], gate_3_and_gate_6, gate_10_xor, 10)

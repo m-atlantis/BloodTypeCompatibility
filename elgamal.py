@@ -6,7 +6,7 @@ def create_g_p_q():
     p = None
     q = None
 
-    primes = [i for i in range(3, 1000) if is_prime(i)]
+    primes = [i for i in range(300, 1000) if is_prime(i)]
     q = random.choice(primes)
 
     p = 2 * q + 1
@@ -68,11 +68,4 @@ def encrypt(m, pk):
 def decrypt(c1, c2):
     s = pow(c1, sk, p)
     inv = pow(s, p - 2, p)
-
     return c2 * inv % p
-
-
-def reset():
-    set_h(None)
-    g, p, q, sk, o_h = None, None, None, None, None
-    init()
