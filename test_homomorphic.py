@@ -1,15 +1,15 @@
+import homomorphic_alice as alice
+import homomorphic_bob as bob
+import homomorphic_func as func
 import unittest
-import garbled_circuit_alice as alice
-import garbled_circuit_bob as bob
 
 
 def test(x, y):
-    # elgamal.init()
+    func.key_gen()
     alice.init(x)
-    bob.set_public_keys(*alice.get_public_keys())
     bob.init(y)
-    alice.set_values_from_bob(*bob.send_to_alice(), bob.get_encrypted_messages())
-    return alice.test()
+    alice.set_encrypted_y(bob.get_encrypted_y())
+    return alice.get_output()
 
 
 class TestProtocolCorrectness(unittest.TestCase):
