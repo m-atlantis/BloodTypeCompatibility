@@ -24,7 +24,7 @@ def get_sk():
 
 def enc(m):
     # Choose random number of elements in y
-    s = random.sample(y, random.randint(1, n))
+    s = random.sample(y, random.randint(2, n))
 
     sum = 0
     for i in range(len(s)):

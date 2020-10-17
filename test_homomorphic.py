@@ -8,8 +8,8 @@ def test(x, y):
     func.key_gen()
     alice.init(x)
     bob.init(y)
-    alice.set_encrypted_y(bob.get_encrypted_y())
-    return alice.get_output()
+    bob.set_encrypted_x(alice.get_encrypted_x())
+    return alice.output(bob.get_eval_output())
 
 
 class TestProtocolCorrectness(unittest.TestCase):
