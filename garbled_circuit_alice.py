@@ -1,38 +1,32 @@
 import garbled_circuit_func as func
-import elgamal
+import elgamal_new as elgamal
 
 
 def init(x_in):
-    global public_keys, secret_keys, primes, generators, blood_type_index, x
+    global public_keys, secret_keys, x
     x = func.get_bits(x_in)
 
-    # public_keys = [[0] * 2] * 3
-    public_keys = []
+    public_keys, secret_keys = [], []
 
-    blood_type_index = x
-
-    secret_keys, primes, generators = [], [], []
+    elgamal.init_g_p_q()
     for i in range(3):
-        create_public_keys(i)
+        create_keys(i)
 
 
-def create_public_keys(i):
-    elgamal.init()
-
-    sk, p, g = elgamal.get_values()
+def create_keys(i):
+    sk = elgamal.create_sk()
     secret_keys.append(sk)
-    primes.append(p)
-    generators.append(g)
 
     keys = [0, 0]
-    keys[x[i]] = elgamal.gen()
+
+    keys[x[i]] = elgamal.gen(sk)
     keys[1 - x[i]] = elgamal.o_gen()
 
     public_keys.append(keys)
 
 
 def get_public_keys():
-    return public_keys, generators, primes
+    return public_keys
 
 
 def set_values_from_bob(F_in, Y_in, d_in, ciphertexts):
@@ -53,14 +47,9 @@ def test():
 def decrypt(ciphertexts):
     e_x = []
 
-    # TODO: This would be used to decrypt if OT worked.
-    # for i in range(3):
-    #     c1, c2 = ciphertexts[i][x[i]]
-    #     dec = elgamal.decrypt_for_garbled_circuit(c1, c2, secret_keys[i], primes[i])
-    #     e_x.append(dec)
-    # TODO: This is used because OT doesn't decrypt correctly.
     for i in range(3):
-        e_x.append(ciphertexts[i][x[i]])
+        c1, c2 = ciphertexts[i][x[i]]
+        dec = elgamal.decrypt(c1, c2, secret_keys[i])
+        e_x.append(str(bin(dec))[2:].zfill(16))
 
     return e_x
-
