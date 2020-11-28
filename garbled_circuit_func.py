@@ -1,14 +1,8 @@
-import random
-import numpy as np
 from garbled_circuit_extra_func import *
 
 
 def xor_gate(labels_a, labels_b, labels_c):
     """" Creates garbled circuit of an XOR gate. """
-    # row_1 = np.array(["b \ a", labels_a[0], labels_a[1]])
-    # row_2 = np.array([labels_b[0], labels_c[1], labels_c[0]])
-    # row_3 = np.array([labels_b[1], labels_c[1], labels_c[0]])
-
     c = []
     one_power_128_string = create_128_bit_string(0)
 
@@ -25,10 +19,6 @@ def xor_gate(labels_a, labels_b, labels_c):
 
 def and_gate(labels_a, labels_b, labels_c):
     """" Creates garbled circuit of an AND gate. """
-    # row_1 = np.array(["b \ a", labels_a[0], labels_a[1]])
-    # row_2 = np.array([labels_b[0], labels_c[1], labels_c[0]])
-    # row_3 = np.array([labels_b[1], labels_c[1], labels_c[0]])
-
     c = []
     one_power_128_string = create_128_bit_string(0)
 
@@ -49,6 +39,7 @@ def init_garbled_circuit(y):
     for i in range(23):
         labels[i] = create_labels_e()
 
+    # Ugly code for better readability.
     F = []
 
     F.append(xor_gate(labels[0], labels[1], labels[2]))
@@ -106,6 +97,7 @@ def evaluate_gate(garbled_gate, l_a, r_b, i):
         if k[16:] == one_power_128_string:
             return k[:16]
 
+    # TODO: Fix depth, always returning 3 not matter where the decoding fails.
     raise Exception("No correct decryption found for the given keys at gate: ", i)
 
 

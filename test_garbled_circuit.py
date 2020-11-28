@@ -4,6 +4,8 @@ import garbled_circuit_bob as bob
 
 
 def test(x, y):
+    """ Initializes the players Alice and Bob, with blood type as input X and Y respectively,
+     and runs the Garbled Circuit evaluation between them. """
     alice.init(x)
     bob.set_public_keys(alice.get_public_keys())
     bob.init(y)
@@ -12,6 +14,8 @@ def test(x, y):
 
 
 class TestProtocolCorrectness(unittest.TestCase):
+    """ Unit testing of every combination of blood type. """
+
     # The following tests all combinations of AB+
     # def test_all_in_one_function(self):
     #     for i in range(8):
@@ -20,6 +24,7 @@ class TestProtocolCorrectness(unittest.TestCase):
     #
     #             self.assertEqual(to_test, (i | j) == i)
 
+    # Tests all combinations separately.
     def test_111_110(self):
         i = 7
         j = 6

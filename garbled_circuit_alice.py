@@ -3,6 +3,7 @@ import elgamal_new as elgamal
 
 
 def init(x_in):
+    """ Initializes the El-Gamal public keys and secret keys. """
     global public_keys, secret_keys, x
     x = func.get_bits(x_in)
 
@@ -14,6 +15,9 @@ def init(x_in):
 
 
 def create_keys(i):
+    """ Generates the secret keys and public keys dynamically.
+        The public keys for x[i] are correctly generated, and
+        the ones for 1 - x[i] are the fake ones. """
     sk = elgamal.create_sk()
     secret_keys.append(sk)
 
@@ -26,10 +30,12 @@ def create_keys(i):
 
 
 def get_public_keys():
+    """ Getter for the public keys. """
     return public_keys
 
 
 def set_values_from_bob(F_in, Y_in, d_in, ciphertexts):
+    """ Sets the variables for the values coming from Bob. """
     global F, d, e_x, e_y, e_xor
     F, d = F_in, d_in
     e_y, e_xor = Y_in
@@ -37,6 +43,7 @@ def set_values_from_bob(F_in, Y_in, d_in, ciphertexts):
 
 
 def test():
+    """ Evaluates the circuit to check if decoding can be done correctly for the chosen values. """
     Z = func.evaluate_circuit(F, e_x, e_y, e_xor)
     if Z == d[0]:
         return 0
@@ -45,6 +52,9 @@ def test():
 
 
 def decrypt(ciphertexts):
+    """ Decrypts the ciphertexts that matches the indexes of the binary value for x.
+        Since the values are converted from binary to integers before decryption,
+        then the decrypted values are converted back to binary and filled to fit a 16-bit size. """
     e_x = []
 
     for i in range(3):
